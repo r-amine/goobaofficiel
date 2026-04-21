@@ -116,60 +116,40 @@
       color: #ffd966;
     }
 
-    .instagram-stats {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-top: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .stat-item {
-      text-align: center;
-      background: rgba(0, 0, 0, 0.3);
-      padding: 0.4rem 0.8rem;
-      border-radius: 28px;
-      min-width: 75px;
-      backdrop-filter: blur(4px);
-    }
-
-    .stat-number {
-      font-size: 1.1rem;
-      font-weight: 800;
-      color: #ffc857;
-      display: block;
-    }
-
-    .stat-label {
-      font-size: 0.6rem;
-      opacity: 0.7;
-      letter-spacing: 0.3px;
-    }
-
     .follower-counter {
       background: linear-gradient(135deg, #e31b23, #ff4757);
-      padding: 0.4rem 1rem;
-      border-radius: 40px;
+      padding: 0.7rem 1.8rem;
+      border-radius: 60px;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      margin-top: 0.7rem;
+      gap: 12px;
+      margin-top: 1rem;
       box-shadow: 0 5px 15px rgba(227, 27, 35, 0.4);
     }
 
     .follower-counter i {
-      font-size: 1rem;
+      font-size: 1.5rem;
     }
 
     .counter-value {
-      font-size: 1.2rem;
+      font-size: 2rem;
       font-weight: 800;
-      letter-spacing: 1px;
+      letter-spacing: 2px;
     }
 
     .counter-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .plus-badge {
+      background: rgba(255, 255, 255, 0.25);
+      padding: 0.2rem 0.6rem;
+      border-radius: 40px;
       font-size: 0.7rem;
-      font-weight: 500;
+      font-weight: 600;
+      margin-left: 5px;
     }
 
     .bio {
@@ -323,12 +303,18 @@
       .catchphrase {
         font-size: 0.9rem;
       }
-      .stat-item {
-        min-width: 65px;
-        padding: 0.3rem 0.6rem;
+      .follower-counter {
+        padding: 0.5rem 1.2rem;
+        gap: 8px;
       }
-      .stat-number {
-        font-size: 1rem;
+      .follower-counter i {
+        font-size: 1.2rem;
+      }
+      .counter-value {
+        font-size: 1.5rem;
+      }
+      .counter-label {
+        font-size: 0.7rem;
       }
       .link-btn {
         padding: 0.75rem 1rem;
@@ -340,9 +326,6 @@
       .link-text {
         font-size: 0.85rem;
       }
-      .counter-value {
-        font-size: 1rem;
-      }
     }
 
     @keyframes softGlow {
@@ -351,6 +334,15 @@
     }
     .catchphrase {
       animation: softGlow 1.8s infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+      100% { transform: scale(1); }
+    }
+    .follower-counter {
+      animation: pulse 2s infinite;
     }
   </style>
 </head>
@@ -371,26 +363,11 @@
         <i class="fas fa-fire" style="font-size: 0.8rem;"></i> Y ANDIAMOOO! <i class="fas fa-futbol"></i>
       </div>
 
-      <div class="instagram-stats">
-        <div class="stat-item">
-          <span class="stat-number" id="postsCount">242</span>
-          <span class="stat-label">PUBLICATIONS</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-number" id="followersCount">0</span>
-          <span class="stat-label">FOLLOWERS</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-number" id="followingCount">2,525</span>
-          <span class="stat-label">FOLLOWING</span>
-        </div>
-      </div>
-
       <div class="follower-counter">
         <i class="fab fa-instagram"></i>
-        <span class="counter-label">INSTAGRAM</span>
-        <span class="counter-value" id="dynamicFollowers">584K</span>
+        <span class="counter-value" id="dynamicFollowers">0</span>
         <span class="counter-label">FOLLOWERS</span>
+        <span class="plus-badge">+580K</span>
       </div>
 
       <div class="bio">
@@ -440,6 +417,20 @@
       </a>
     </div>
 
+    <div class="video-section">
+      <div class="section-title">
+        <i class="fas fa-play-circle"></i> 
+        <span>🔥 LATEST MOMENT • Y ANDIAMOO EDITION</span>
+      </div>
+      <div class="video-wrapper">
+        <iframe src="https://www.youtube.com/watch?v=nolSCcnFYZM" 
+                title="Gooba latest video" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+
     <div class="booking-row">
       <a href="mailto:ghaithouerdianebacha@gmail.com" class="booking-btn">
         <i class="fas fa-envelope"></i> BOOKING / COLLAB
@@ -453,47 +444,11 @@
   </div>
 
   <script>
-    function animateCounter(element, start, end, duration) {
-      let startTimestamp = null;
-      const step = (timestamp) => {
-        if (!startTimestamp) startTimestamp = timestamp;
-        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-        const currentValue = Math.floor(progress * (end - start) + start);
-        
-        if (end >= 1000) {
-          if (currentValue >= 1000) {
-            element.innerText = (currentValue / 1000).toFixed(1) + 'K';
-          } else {
-            element.innerText = currentValue.toString();
-          }
-        } else {
-          element.innerText = currentValue.toString();
-        }
-        
-        if (progress < 1) {
-          window.requestAnimationFrame(step);
-        } else {
-          if (end >= 1000) {
-            element.innerText = (end / 1000).toFixed(0) + 'K';
-          } else {
-            element.innerText = end.toString();
-          }
-        }
-      };
-      window.requestAnimationFrame(step);
-    }
-
-    const followersElement = document.getElementById('followersCount');
-    if (followersElement) {
-      followersElement.innerText = '0';
-      animateCounter(followersElement, 0, 584000, 2000);
-    }
-
     const dynamicElement = document.getElementById('dynamicFollowers');
     if (dynamicElement) {
       dynamicElement.innerText = '0';
       let startVal = 0;
-      let endVal = 584;
+      let endVal = 580;
       let duration = 2000;
       let startTime = null;
       
@@ -505,17 +460,11 @@
         if (progress < 1) {
           window.requestAnimationFrame(animateK);
         } else {
-          dynamicElement.innerText = '584K';
+          dynamicElement.innerText = '580K';
         }
       };
       window.requestAnimationFrame(animateK);
     }
-
-    const postsElement = document.getElementById('postsCount');
-    if (postsElement) postsElement.innerText = '242';
-    
-    const followingElement = document.getElementById('followingCount');
-    if (followingElement) followingElement.innerText = '2,525';
   </script>
 </body>
 </html>
